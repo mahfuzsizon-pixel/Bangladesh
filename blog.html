@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog — Zapatos Bangladesh</title>
+  <meta name="description" content="Sneaker stories, style guides and shoe-care tips from Zapatos Bangladesh.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Blog — Zapatos Bangladesh">
+  <meta property="og:description" content="Sneaker stories, style guides and shoe-care tips.">
+  <meta property="og:image" content="assets/logo.svg">
+  <meta name="theme-color" content="#111111">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700;6..96,900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="blog">
+  <div id="site-header"></div>
+
+  <main id="main">
+    <!-- Blog posts carousel -->
+    <section class="container blog-top" aria-label="More blog posts" id="blog-top"></section>
+
+    <div class="container blog-layout">
+      <!-- Main article -->
+      <article class="post" id="post"></article>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" aria-label="Blog sidebar">
+        <section class="widget">
+          <h2 class="widget__title">Product Categories</h2>
+          <ul class="tree">
+            <li><a href="shop.html?category=accessories">Accessories</a></li>
+            <li><a href="shop.html">Colour Options</a></li>
+            <li><a href="shop.html?category=mens-sneakers">Men's Sneakers</a></li>
+            <li><a href="shop.html?category=sale">Sale</a></li>
+            <li><a href="shop.html?category=slides">Slides</a>
+              <ul>
+                <li><a href="shop.html?category=slides&amp;gender=men">Men</a></li>
+                <li><a href="shop.html?category=slides&amp;gender=women">Women</a></li>
+              </ul>
+            </li>
+            <li><a href="shop.html?category=womens-sneakers">Women's Sneakers</a></li>
+          </ul>
+        </section>
+        <section class="widget">
+          <h2 class="widget__title">Sale Products</h2>
+          <div id="sale-widget"></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/blog.js"></script>
+</body>
+</html>

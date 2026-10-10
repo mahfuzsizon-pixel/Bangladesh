@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop — Zapatos Bangladesh</title>
+  <meta name="description" content="Browse Zapatos sneakers, slides and accessories. Filter by size, colour and price, with delivery all over Bangladesh.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shop — Zapatos Bangladesh">
+  <meta property="og:description" content="Sneakers, slides and accessories delivered all over Bangladesh.">
+  <meta property="og:image" content="assets/logo.svg">
+  <meta name="theme-color" content="#111111">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700;6..96,900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="shop">
+  <div id="site-header"></div>
+
+  <main id="main">
+    <!-- 4.1 Category banner -->
+    <section class="banner" id="banner"></section>
+
+    <div class="container" id="shop-content">
+      <!-- 4.2 Toolbar -->
+      <div class="toolbar" id="toolbar">
+        <button class="toolbar__filter" id="filter-open" aria-controls="filter-panel" aria-expanded="false"></button>
+        <div class="cols" role="group" aria-label="Grid columns" id="cols"></div>
+        <label class="sort"><span class="sr-only">Sort products</span>
+          <select id="sort">
+            <option value="default">Default sorting</option>
+            <option value="popularity">Sort by popularity</option>
+            <option value="latest" selected>Sort by latest</option>
+            <option value="price-asc">Sort by price: low to high</option>
+            <option value="price-desc">Sort by price: high to low</option>
+          </select>
+        </label>
+      </div>
+      <p class="result-count" id="result-count" aria-live="polite"></p>
+      <!-- 4.3 Grid + pagination -->
+      <div class="grid" id="grid"></div>
+      <nav class="pager" id="pager" aria-label="Pagination"></nav>
+    </div>
+
+    <!-- 4.4 Slides exception -->
+    <div class="container" id="subcats-wrap" hidden>
+      <div class="subcats" id="subcats"></div>
+    </div>
+  </main>
+
+  <!-- Off-canvas filter panel -->
+  <div class="overlay" data-overlay="filter-panel"></div>
+  <aside class="drawer drawer--left" id="filter-panel" role="dialog" aria-modal="true" aria-labelledby="filter-title" aria-hidden="true">
+    <div class="drawer__head"><h2 class="drawer__title" id="filter-title">Filter Products</h2><button class="icon-btn" data-close aria-label="Close filters"></button></div>
+    <form class="filter__body" id="filter-form">
+      <div class="filter__group">
+        <h3><label for="f-price">Price</label></h3>
+        <input type="range" class="range" id="f-price" min="0" step="50">
+        <div class="range__val"><span>0.0৳</span><output id="f-price-out" for="f-price"></output></div>
+      </div>
+      <fieldset class="filter__group"><legend>Size</legend><div class="checks" id="f-sizes"></div></fieldset>
+      <fieldset class="filter__group"><legend>Colour</legend><div class="swatches" id="f-colours"></div></fieldset>
+      <fieldset class="filter__group"><legend>Availability</legend>
+        <label class="check"><input type="checkbox" name="avail" value="in"> In stock</label>
+        <label class="check"><input type="checkbox" name="avail" value="out"> Sold out</label>
+      </fieldset>
+    </form>
+    <div class="filter__actions">
+      <button type="button" class="btn btn--outline" id="f-reset">Reset</button>
+      <button type="button" class="btn btn--dark" id="f-apply">Apply</button>
+    </div>
+  </aside>
+
+  <div id="site-footer"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>
