@@ -24,8 +24,9 @@ python3 -m http.server 8000      # then visit http://localhost:8000
 Or use the VS Code "Live Server" extension.
 
 ## Make it yours
-- **Contact details:** edit `SITE` at the top of `js/main.js` (phone, email, address, social links).
-- **Products:** edit the `SEED` list in `js/products.js`. Each row has name, category, price, sale price, badge, colour and gender. Stock, SKU and specs are generated, and you can replace them with real values.
+- **Contact details:** edit `SITE` at the top of `js/main.js`. Add your Facebook and Instagram links there; their icons and the Instagram row appear automatically once filled in.
+- **Products:** edit `MY_PRODUCTS` in `js/products.js`. Copy a block to add a shoe (name, category, price, salePrice, badge, colour, sizes, stock per size, images). Empty categories show a "coming soon" message.
+- **Demo products:** set `USE_DEMO_PRODUCTS = true` in `js/products.js` to preview the design with 42 sample products. Keep it `false` for the real shop.
 - **Images:** sneaker photos are Unsplash placeholders (`SHOE_PHOTOS`, `LIFESTYLE`, `INSTAGRAM`, `BLOG_POSTS`). Slides and accessories use drawn SVG placeholders. Put your own photos in `assets/img/` and change the URLs. Any image that fails to load shows `assets/img/placeholder-shoe.svg`.
 - **Colours and fonts:** change the CSS variables in `:root` at the top of `css/style.css`.
 - **Checkout:** "View Cart" and "Checkout" show a "coming soon" message. Connect them to a backend with SSLCOMMERZ, bKash or Nagad when you are ready.

@@ -6,12 +6,12 @@
    ===================================================================== */
 
 const SITE = {
-  phone: '+880 1XXX-XXXXXX',          // PLACEHOLDER
-  phoneHref: 'tel:+8801000000000',    // PLACEHOLDER
-  email: 'contact@yourdomain.com',    // PLACEHOLDER
-  address: ['House 00, Road 00', 'Gulshan-1, Dhaka 1212', 'Bangladesh'], // PLACEHOLDER
-  facebook: 'https://www.facebook.com/',
-  instagram: 'https://www.instagram.com/'
+  phone: '01729-866180',
+  phoneHref: 'tel:+8801729866180',
+  email: 'mahafuzsizon@gmail.com',
+  address: ['Rampura', 'Dhaka', 'Bangladesh'],
+  facebook: '',   // paste your Facebook page link here, e.g. 'https://www.facebook.com/zapatosbd'
+  instagram: ''   // paste your Instagram link here — empty = icon and Instagram row are hidden
 };
 
 /* ---------------------------------------------------------------------
@@ -215,10 +215,10 @@ function renderFooter() {
         <p class="fbrand__row">${ICONS.pin}<span>${SITE.address.join('<br>')}</span></p>
         <p class="fbrand__row">${ICONS.mail}<a href="mailto:${SITE.email}">${SITE.email}</a></p>
         <p class="fbrand__row">${ICONS.phone}<a href="${SITE.phoneHref}">${SITE.phone}</a></p>
-        <div class="social">
-          <a href="${SITE.facebook}" target="_blank" rel="noopener" aria-label="Zapatos on Facebook">${ICONS.facebook}</a>
-          <a href="${SITE.instagram}" target="_blank" rel="noopener" aria-label="Zapatos on Instagram">${ICONS.instagram}</a>
-        </div>
+        ${SITE.facebook || SITE.instagram ? `<div class="social">
+          ${SITE.facebook ? `<a href="${SITE.facebook}" target="_blank" rel="noopener" aria-label="Zapatos on Facebook">${ICONS.facebook}</a>` : ''}
+          ${SITE.instagram ? `<a href="${SITE.instagram}" target="_blank" rel="noopener" aria-label="Zapatos on Instagram">${ICONS.instagram}</a>` : ''}
+        </div>` : ''}
       </div>
       ${col('Categories', [["Men's Sneakers", 'shop.html?category=mens-sneakers'], ["Women's Sneakers", 'shop.html?category=womens-sneakers'], ['Slides', 'shop.html?category=slides'], ['Sale', 'shop.html?category=sale']])}
       ${col('Information', [['About Us', '#'], ['Contact Us', '#'], ['Terms &amp; Conditions', '#'], ['Returns &amp; Exchanges', '#'], ['Shipping &amp; Delivery', '#'], ['Privacy Policy', '#']])}
@@ -590,7 +590,7 @@ function bootSite() {
   $('#m-wishlist').addEventListener('click', e => { e.preventDefault(); closeLayer($('#mobile-nav')); openLayer($('#wish-drawer'), $('#menu-open')); });
   $('#account-link').addEventListener('click', e => { e.preventDefault(); toast('Account login is coming soon.'); });
   $('#view-cart').addEventListener('click', e => { e.preventDefault(); toast('Full cart page is coming soon.'); });
-  $('#checkout').addEventListener('click', e => { e.preventDefault(); toast('Checkout (bKash, Nagad, card via SSLCOMMERZ, Cash on Delivery) is coming soon.'); });
+  $('#checkout').addEventListener('click', e => { e.preventDefault(); toast(`To place your order, call <b>${SITE.phone}</b>. Cash on Delivery all over Bangladesh.`); });
 
   // Delegated clicks: wishlist hearts + cart line controls
   document.addEventListener('click', e => {

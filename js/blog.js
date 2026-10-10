@@ -41,7 +41,9 @@
   initCarousel($('.post__shop .carousel'));
 
   /* Sidebar: sale products */
-  $('#sale-widget').innerHTML = PRODUCTS.filter(p => p.salePrice).slice(0, 5).map(p => `
+  const onSale = PRODUCTS.filter(p => p.salePrice);
+  if (!onSale.length) $('#sale-widget').closest('.widget').hidden = true;
+  $('#sale-widget').innerHTML = onSale.slice(0, 5).map(p => `
     <div class="mini"><img src="${p.images[0]}" alt="${escapeHTML(p.name)}" width="70" height="70" loading="lazy">
       <div><a href="product.html?id=${p.id}">${escapeHTML(p.name)}</a>${priceHTML(p)}</div></div>`).join('');
 

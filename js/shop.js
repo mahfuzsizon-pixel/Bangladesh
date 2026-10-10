@@ -26,8 +26,9 @@
   if (catKey === 'slides' && !gender) {
     $('#shop-content').hidden = true;
     $('#subcats-wrap').hidden = false;
-    const men = PRODUCTS.find(p => p.category === 'slides' && p.gender === 'men');
-    const women = PRODUCTS.find(p => p.category === 'slides' && p.gender === 'women');
+    const art = slideArt('#111', '#2b2b2b', 'transparent', -8);
+    const men = PRODUCTS.find(p => p.category === 'slides' && p.gender === 'men') || { images: [art, art, art] };
+    const women = PRODUCTS.find(p => p.category === 'slides' && p.gender === 'women') || { images: [art, art, slideArt('#D0021B', '#f6e7d8', 'transparent', -8)] };
     $('#subcats').innerHTML = `
       <a class="subcat" href="shop.html?category=slides&gender=men"><img src="${men.images[2]}" alt="Men's slides" width="600" height="600"><span class="subcat__label">MEN</span></a>
       <a class="subcat subcat--w" href="shop.html?category=slides&gender=women"><img src="${women.images[2]}" alt="Women's slides" width="600" height="600"><span class="subcat__label">WOMEN</span></a>`;
@@ -39,6 +40,13 @@
     : catKey === 'sale' ? PRODUCTS.filter(p => p.salePrice)
     : PRODUCTS.filter(p => p.category === catKey);
   if (gender) base = base.filter(p => p.gender === gender);
+
+  /* Empty category: friendly "coming soon" message instead of an empty grid */
+  if (!base.length) {
+    $('#shop-content').innerHTML = `<div class="no-results"><p>New ${escapeHTML(pageTitle)} are coming soon.<br>Call <a href="${SITE.phoneHref}">${SITE.phone}</a> to ask about upcoming stock.</p>
+      <a class="btn btn--dark" href="shop.html">See all shoes</a></div>`;
+    return;
+  }
 
   const maxPrice = Math.ceil(Math.max(...base.map(effectivePrice)) / 50) * 50;
   const state = { sort: 'latest', page: 1, cols: 4, maxPrice, sizes: new Set(), colours: new Set(), avail: new Set() };
@@ -66,8 +74,9 @@
   const isShoeCat = catKey !== 'accessories';
   $('#f-sizes').closest('fieldset').hidden = !isShoeCat;
   $('#f-sizes').innerHTML = [39, 40, 41, 42, 43, 44].map(s => `<label class="check"><input type="checkbox" name="size" value="${s}"> ${s}</label>`).join('');
-  const SW = { white: '#f4f4f4', black: '#111', red: '#D0021B', blue: '#1e4fd8', grey: '#9aa3ad', yellow: '#F5B800' };
-  const coloursHere = [...new Set(base.map(p => p.colour))];
+  const SW = { white: '#f4f4f4', black: '#111', red: '#D0021B', blue: '#1e4fd8', grey: '#9aa3ad', yellow: '#F5B800', brown: '#7b4a2a' };
+  const coloursHere = [...new Set(base.map(p => p.colour).filter(Boolean))];
+  $('#f-colours').closest('fieldset').hidden = !coloursHere.length;
   $('#f-colours').innerHTML = coloursHere.map(c => `<label class="swatch" style="--c:${SW[c]}" title="${c}"><input type="checkbox" name="colour" value="${c}" aria-label="${c}"></label>`).join('');
 
   $('#filter-open').addEventListener('click', e => openLayer($('#filter-panel'), e.currentTarget));

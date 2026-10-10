@@ -5,18 +5,18 @@
   /* ---------- Hero slider ---------- */
   const SLIDES = [
     { cls: '', bg: LIFESTYLE.hero1, eyebrow: 'Zapatos · Dhaka 2026', title: 'Coming Soon', tag: 'h1',
-      text: 'Our new Monsoon Collection lands this month — water-ready grip, breathable knit and colours made for Bangladesh streets.',
-      cta: 'Get Early Access', href: 'shop.html?category=mens-sneakers', card: { name: 'Model 001', sub: 'Dhaka Red', id: 1 } },
+      text: 'More styles are on the way. Shop our first collection today — Cash on Delivery all over Bangladesh.',
+      cta: 'Shop Now', href: 'shop.html', card: { name: 'Model 001', sub: 'Dhaka Red', id: 1 } },
     { cls: 'hero__slide--maroon', bg: LIFESTYLE.hero2, eyebrow: 'New season', title: 'Walk Your City', tag: 'h2',
       text: "From Gulshan to Old Dhaka — light, cushioned sneakers built for long days, rickshaw rides and late-night adda.",
       cta: 'Shop Men', href: 'shop.html?category=mens-sneakers', card: { name: 'Model 002', sub: 'Padma White', id: 2 } },
-    { cls: 'hero__slide--crimson', bg: LIFESTYLE.hero3, eyebrow: 'Up to 20% off', title: 'Big Sale', tag: 'h2',
-      text: 'Selected sneakers and slides at their lowest prices of the year. Cash on delivery all over Bangladesh.',
-      cta: 'Shop the Sale', href: 'shop.html?category=sale', card: { name: 'Model 005', sub: 'Monsoon Blue', id: 5 } }
+    { cls: 'hero__slide--crimson', bg: LIFESTYLE.hero3, eyebrow: 'Rampura, Dhaka', title: 'Order Today', tag: 'h2',
+      text: `Pick your pair and pay when it arrives. Call ${SITE.phone} to order or ask about sizes.`,
+      cta: 'See All Shoes', href: 'shop.html', card: { name: 'Model 005', sub: 'Monsoon Blue', id: 5 } }
   ];
   const hero = $('#hero');
   hero.innerHTML = SLIDES.map((s, i) => {
-    const p = getProduct(s.card.id);
+    const p = getProduct(s.card.id) || PRODUCTS[i % PRODUCTS.length];
     return `<div class="hero__slide ${s.cls}${i === 0 ? ' is-active' : ''}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${SLIDES.length}" ${i ? 'aria-hidden="true"' : ''}>
       <img class="hero__bg" src="${s.bg}" alt="" data-nofallback width="1800" height="900" ${i ? 'loading="lazy"' : 'fetchpriority="high"'}>
       <div class="hero__inner">
@@ -26,7 +26,7 @@
         <a href="${s.href}" class="btn btn--light" ${i ? 'tabindex="-1"' : ''}>${s.cta}<span class="btn__circle">${ICONS.arrowRight}</span></a>
       </div>
       <div class="hero__card">
-        <div class="hero__card-top"><span>${s.card.name}<br>${s.card.sub}</span><a href="product.html?id=${p.id}" aria-label="View ${escapeHTML(p.name)}" ${i ? 'tabindex="-1"' : ''}>${ICONS.arrowUpRight}</a></div>
+        <div class="hero__card-top"><span>${escapeHTML(p.name)}</span><a href="product.html?id=${p.id}" aria-label="View ${escapeHTML(p.name)}" ${i ? 'tabindex="-1"' : ''}>${ICONS.arrowUpRight}</a></div>
         <img src="${p.images[0]}" alt="${escapeHTML(p.name)}" width="300" height="300">
         <span class="hero__card-price">${formatPrice(effectivePrice(p))}</span>
       </div>
@@ -64,8 +64,9 @@
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) play();
 
   /* ---------- Category masonry ---------- */
-  const acc = PRODUCTS.find(p => p.category === 'accessories');
-  const slide = PRODUCTS.find(p => p.category === 'slides');
+  // Category tiles fall back to drawn placeholders when a category has no products yet
+  const acc = PRODUCTS.find(p => p.category === 'accessories') || { images: [accessoryArt('cleaner', '#D0021B')] };
+  const slide = PRODUCTS.find(p => p.category === 'slides') || { images: [slideArt('#111', '#2b2b2b'), slideArt('#111', '#2b2b2b', '#f3f3f3', -12)] };
   $('#cats').innerHTML = `
     <a href="shop.html?category=mens-sneakers" class="tile tile--lg"><img src="${LIFESTYLE.catMen}" alt="Men's sneakers collection" width="900" height="900" loading="lazy"><span class="tile__label">Men's Sneakers</span></a>
     <div class="cats__right">
@@ -89,17 +90,20 @@
 
   /* ---------- Trending & best seller grids ---------- */
   const shoes = PRODUCTS.filter(p => p.category.endsWith('sneakers'));
-  const trending = [...shoes].sort((a, b) => b.addedAt - a.addedAt).filter((_, i) => i % 2 === 0).slice(0, 12);
+  const trending = [...shoes].sort((a, b) => b.addedAt - a.addedAt).filter((_, i) => shoes.length <= 12 || i % 2 === 0).slice(0, 12);
   const best = [...PRODUCTS].sort((a, b) => b.popularity - a.popularity).slice(0, 12);
   $('#trending').innerHTML = trending.map(p => cardHTML(p)).join('');
   $('#bestseller').innerHTML = best.map(p => cardHTML(p)).join('');
+  // With a small catalogue both grids would show the same shoes — keep only one
+  if (PRODUCTS.length < 8) $('#bestseller').closest('section').hidden = true;
 
   /* ---------- Blog preview ---------- */
   $('#blog-pair').innerHTML = BLOG_POSTS.slice(0, 2).map(b => blogCardHTML(b)).join('');
 
-  /* ---------- Instagram row ---------- */
+  /* ---------- Instagram row (hidden until SITE.instagram is set) ---------- */
+  if (!SITE.instagram) $('#insta').closest('section').hidden = true;
   $('#insta').innerHTML = INSTAGRAM.map(i =>
-    `<a class="insta__item" href="${i.url}" target="_blank" rel="noopener" aria-label="${i.alt} (opens in new tab)">
+    `<a class="insta__item" href="${i.url || SITE.instagram}" target="_blank" rel="noopener" aria-label="${i.alt} (opens in new tab)">
       <img src="${i.img}" alt="${i.alt}" width="500" height="500" loading="lazy"><span class="insta__ic">${ICONS.instagram}</span></a>`).join('');
 
   Wishlist.sync();

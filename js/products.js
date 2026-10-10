@@ -140,10 +140,10 @@ const COLOUR_NAMES = { red: 'Red & White', white: 'White & Blue', grey: 'Grey & 
 
 const slugify = s => s.toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-/* ---------- Build the full PRODUCTS array ----------
+/* ---------- Demo catalogue (switched off — see USE_DEMO_PRODUCTS) ----------
    Each item has: id, name, slug, category, price, salePrice, badge,
    images[], sizes[{size, stock}], sku, short, specs{}, description[] */
-const PRODUCTS = SEED.map((row, i) => {
+const DEMO_PRODUCTS = SEED.map((row, i) => {
   const [name, category, price, salePrice, badge, colour, gender, imgSpec] = row;
   const id = i + 1;
   const isShoe = category !== 'accessories';
@@ -201,6 +201,65 @@ const PRODUCTS = SEED.map((row, i) => {
   };
 });
 
+/* =====================================================================
+   YOUR PRODUCTS — this is the real catalogue shown on the website.
+   To add a shoe, copy one block and change the details.
+   - price / salePrice: in Taka (salePrice: null = not on sale)
+   - badge: 'new', 'sale', 'soldout' or null
+   - colour: white | black | grey | blue | red | yellow | brown | null
+   - stock: pairs available PER SIZE (10 is a placeholder — set your real numbers)
+   - images: PLACEHOLDER photos. Put your own photos in assets/img/products/
+     and replace these, e.g. 'assets/img/products/classic-white-1.jpg'
+   ===================================================================== */
+const MY_PRODUCTS = [
+  { name: 'Classic White Sneakers', category: 'mens-sneakers', price: 1490, salePrice: null, badge: 'new',
+    colour: 'white', sizes: [39, 40, 41, 42, 43], stock: 10, images: [8, 2, 16] },
+  { name: 'Black Casual Sneakers', category: 'mens-sneakers', price: 1690, salePrice: null, badge: 'new',
+    colour: 'black', sizes: [40, 41, 42, 43, 44], stock: 10, images: [7, 19, 5] },
+  { name: 'Everyday Running Shoes', category: 'mens-sneakers', price: 1990, salePrice: null, badge: 'new',
+    colour: null, sizes: [39, 40, 41, 42, 43], stock: 10, images: [3, 9, 12] },
+  { name: 'Brown Casual Loafers', category: 'mens-sneakers', price: 1790, salePrice: null, badge: 'new',
+    colour: 'brown', sizes: [40, 41, 42, 43], stock: 10, images: [10, 6, 14] }
+];
+
+/* Set to true to show the 42 demo products instead (for testing the design). */
+const USE_DEMO_PRODUCTS = false;
+
+const COLOUR_LABEL = { white: 'White', black: 'Black', grey: 'Grey', blue: 'Blue', red: 'Red', yellow: 'Yellow', brown: 'Brown' };
+
+function buildProduct(item, i) {
+  const id = i + 1;
+  const cat = CATEGORIES[item.category];
+  const specs = {};
+  if (item.colour) specs.Colour = COLOUR_LABEL[item.colour];
+  specs.Category = cat.name;
+  specs['Available Sizes'] = item.sizes.join(', ');
+  return {
+    id,
+    name: item.name,
+    slug: slugify(item.name),
+    category: item.category,
+    gender: item.gender || 'men',
+    colour: item.colour,
+    price: item.price,
+    salePrice: item.salePrice || null,
+    badge: item.badge || null,
+    images: item.images.map(n => typeof n === 'number' ? UNSPLASH(SHOE_PHOTOS[n % SHOE_PHOTOS.length]) : n),
+    sizes: item.sizes.map(size => ({ size, stock: item.badge === 'soldout' ? 0 : item.stock })),
+    sku: `ZAP-${cat.short}-${String(id).padStart(2, '0')}`,
+    popularity: 100 - id,
+    addedAt: id,
+    short: item.short || 'Comfortable everyday pair. Cash on Delivery all over Bangladesh.',
+    specs,
+    description: item.description || [
+      `${item.name} — available in sizes ${item.sizes.join(', ')}.`,
+      'Not sure about your size? Check the Size Guide, or call us and we will help you choose. Exchanges are accepted within 10 days.'
+    ]
+  };
+}
+
+const PRODUCTS = USE_DEMO_PRODUCTS ? DEMO_PRODUCTS : MY_PRODUCTS.map(buildProduct);
+
 /* Helpers used by every page */
 const getProduct = id => PRODUCTS.find(p => p.id === Number(id));
 const effectivePrice = p => p.salePrice || p.price;
@@ -224,7 +283,7 @@ const LIFESTYLE = {
 /* Instagram row — replace the links with your real Instagram posts */
 const INSTAGRAM = [0, 9, 5, 13, 1, 7].map((n, i) => ({
   img: UNSPLASH(SHOE_PHOTOS[n], 500),
-  url: 'https://www.instagram.com/',
+  url: '', // link to a specific post; empty = your Instagram profile (SITE.instagram)
   alt: `Zapatos customer photo ${i + 1} on Instagram`
 }));
 

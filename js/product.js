@@ -175,7 +175,7 @@
     <div class="tabs__panel" role="tabpanel" id="panel-info" aria-labelledby="tab-info" tabindex="0" hidden>
       <table class="attr"><tbody>
         <tr><th scope="row">Size</th><td>${sizeList}</td></tr>
-        <tr><th scope="row">Colour</th><td>${p.specs.Colour}</td></tr>
+        <tr><th scope="row">Colour</th><td>${p.specs.Colour || '—'}</td></tr>
         <tr><th scope="row">Weight</th><td>${p.specs.Weight || '—'}</td></tr>
       </tbody></table>
     </div>`;
